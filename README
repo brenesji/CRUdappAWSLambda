@@ -1,4 +1,6 @@
-AWS Lambda
+# CRUD APP using AWS LAmbda, API Gateway and AWS Dynamo DB 
+
+**AWS Lambda**
 
 1. Nombre createBook y nodes 18.x
 2. Si hago algún cambio en la función tengo que darle deploy
@@ -6,7 +8,7 @@ AWS Lambda
 4. 
 
 
-API gateway
+**API gateway**
 
 
 1. Crear una HTTP API
@@ -33,7 +35,7 @@ A este punto seria bueno probar el API a ver si está funcional, lo podemos prob
 
 
 
-Dynamo DB
+**Dynamo DB**
 
 
 1. Nos vamos a DynamoDB y le damos create table
@@ -59,7 +61,7 @@ Dynamo DB
 
 
 
-CloudWatch
+**AWS CloudWatch**
 
 1. Nos vamos a el evento creado
 2. Damos click en monitor,  luego vamos a CloudWatch  logs

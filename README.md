@@ -2,112 +2,74 @@
 
 **AWS Lambda**
 
-1. Nombre createBook y nodes 18.x
-2. Si hago algún cambio en la función tengo que darle deploy
-3. Ponemos el código de node js https://gist.github.com/ymulenll/67d7ae1ffb768d5d3deda1747dc4d4c8 
-4. 
+1. Go to AWS Lambda Service and click on 
+2. Set name as *createBook* and pick runtime as *nodejs 18.x*
+3. Copy and paste the code in index.mjs file
+5. Hit deploy for every new change
 
 
 **API gateway**
 
 
-1. Crear una HTTP API
-2. Le damos Add Integration con lambda y me va a salir la función que yo había creado
-3. Ponemos el nombre del API books-api
-￼
-4. Damos next y elegimos el verbo POST y el resource path que puede ser book y lo integramos con la función
+1. Go to AWS API Gateway Service and click on
+2. Click on create *HTTP API*
+3. Click on *Add Integration* choose *lambda* and picked the already created function
+4. Set a name as *books-api*
+5. Hit next and pick *POST* as the verb and modify resource path as *books* to integrate with the function
+6. Leave everything else as default and click on create
+   -by clicking the API we can see the URL
 
-
-￼
-
-
-5. Todo lo demás queda por default y le damos crear
-
-￼
-
-6. Si damos click a la API podemos ver la URL del API
-
-A este punto seria bueno probar el API a ver si está funcional, lo podemos probar con postman
-
-
-
-￼
-
+We can test our API Gateway using Postman or any other preferred tool
 
 
 **Dynamo DB**
 
 
-1. Nos vamos a DynamoDB y le damos create table
-2. Le ponemos de nombre books y de partition key le ponemos id, todo lo de, mas queda default
-3. En Explore table items puedo ver los itemes de la tabla existente 
+1. Go to AWS Dynano DB and click on create table
+2. We can name it as *books* and set partition key as *id*, leave everything else as default
+- We can see table data by clicking on explore table items
 
 
+**Create inline policy to have write permissions on the DB**
 
-￼
-3. Para probarla (una vez actualizado el código en la funcion), debemos irnos a postman y generar un payload de json y en el body poner lo siguiente:
-
-
-{
-    "title":"bible",
-    "author":"God"
-}
-￼
-
-4. Si nos da el siguiente error, debemos actualizar el rol
-
-{"message":"User: arn:aws:sts::255587935648:assumed-role/createBook-role-ft5i2b13/createBook is not authorized to perform: dynamodb:PutItem on resource: arn:aws:dynamodb:us-east-1:255587935648:table/books because no identity-based policy allows the dynamodb:PutItem action"}
-
-
+1. Go to Lambda function, click on configuration then permissions
+2. We must have an existant role with CloudWatch permissions, click on ti to modify it.
+3. Clocik on create inline policy
+4. Look up for the *dynamodb* service, and add action *putitem*
+5. We must specify the region and the corresppondant ARN
+6. Generate a name for the policy and then create.
 
 
 **AWS CloudWatch**
 
-1. Nos vamos a el evento creado
-2. Damos click en monitor,  luego vamos a CloudWatch  logs
-3. Dentro de log groups vamos a ver los logs de mi app
+1. GO to AWS Lambda function.
+2. Click on monitor, then CloudWatch  logs
+3. Inside log groups we will see the app logs
+- We can use search log groupto view it as text so it will be easir to search for the errors.
+
+
+**Create new record using POSTMAN**
+
+1. Go to POSTMAN tool, choose POST verb, paste the URL
+2. Go to body/raw/json and paste something like the following:
+
+   {
+    "title": "Harry Potter",
+    "author": "JK Rowling"
+   }
+3. Hit send button   
+4. If we get the following error, it mease we must add the proper permissions.
+
+-{"message":"User: arn:aws:sts::255587935648:assumed-role/createBook-role-ft5i2b13/createBook is not authorized to perform: dynamodb:PutItem on resource: arn:aws:dynamodb:us-east-1:255587935648:table/books because no identity-based policy allows the dynamodb:PutItem action"}-
 
 
 
-￼
+**Final steps**
 
+We shall need to delete the folling in order to avoid AWS charges:
 
-1. Con search log group me sale tipo texto y es mas fácil ver los errores
-￼
-
-
-Agregar los permisos necesarios para que escriba en la BD
-
-
-1. Me voy a la función lambda, doy click en configuración, luego en permisos
-2. Ahi hay un rol existente con permisos a CloudWatch, damos click en el role para modificarlo
-
-￼
-
-
-3. Doy click en añadir permiso y luego en create inline policy
-4. Creo la policy que necesito service dynamodb, action putitem
-5. Especifico region y ARN
-6. Genero un nombre para la policy y luego la creo 
-
-
-
-
-
-(Los roles existentes son muy genéricos por eso yo debo crear algo mas especifico)
-
-￼
-
-
-
-
-*****
-
-Finalmente debo borrar
-
-- La función lambda
-- El API Gateway creado
-- La base de datos en Dynamo DB
-- Los roles creados
-- 
+- AWS Lambda Function
+- AWS API Gateway
+- Dynamo DB table created
+- Any new role created (just in case)
 
